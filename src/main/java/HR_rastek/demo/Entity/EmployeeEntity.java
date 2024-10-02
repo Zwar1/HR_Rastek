@@ -12,14 +12,14 @@ public class EmployeeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_e;
+    private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "PersonalInfoEntity", referencedColumnName = "ID")
+    @JoinColumn(name = "PersonalInfoEntity", referencedColumnName = "id_p")
     private PersonalInfoEntity personalInfo;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "BasicInfoEntity", referencedColumnName = "id")
+    @JoinColumn(name = "BasicInfoEntity", referencedColumnName = "id_b")
     private BasicInfoEntity basicInfo;
 
 }

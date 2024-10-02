@@ -1,24 +1,24 @@
-package HR_rastek.demo.Entity;
+package HR_rastek.demo.DTO;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
+import java.math.BigDecimal;
+
 @Getter
 @Setter
-@Table(name = "personal_info")
-public class PersonalInfoEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_p")
-    private Long id_p;
+public class UpdateEmployeeReq {
 
+    @JsonIgnore
+    @NotBlank
+    private Long id;
+
+    // Personal Information fields
     private String name;
     private String NIP;
     private String NIK;
@@ -41,6 +41,17 @@ public class PersonalInfoEntity {
     private String jumlahAnak;
     private String nomorRekening;
     private String bank;
+
+
+    // Basic Information fields
+    private String jabatan;
+    private String divisi;
+    private String departement;
+    private String statusKontrak;
+    private String tanggalMulaiKontrak;
+    private String kontrakKedua;
+    private BigDecimal salary;
+    private String attachment;
 
 
 

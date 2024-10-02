@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 public class EmployeeRes {
     // Personal Information fields
-    private Long ID;
+    private Long id_p;
     private String name;
     private String NIP;
     private String NIK;
@@ -38,7 +38,7 @@ public class EmployeeRes {
 
 
     // Basic Information fields
-    private Long id;
+    private Long id_b;
     private String jabatan;
     private String divisi;
     private String departement;
@@ -49,7 +49,7 @@ public class EmployeeRes {
     private String attachment;
 
     // Employee Fields
-    private Long id_e;
+    private Long id;
 
 
 

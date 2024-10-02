@@ -19,7 +19,8 @@ public class BasicInfoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_b")
+    private Long id_b;
 
     private String jabatan;
     private String divisi;
