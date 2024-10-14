@@ -15,11 +15,14 @@ public class EmployeeEntity {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "PersonalInfoEntity", referencedColumnName = "id_p")
+    @JoinColumn(name = "id_personal", referencedColumnName = "id_personal")
     private PersonalInfoEntity personalInfo;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "BasicInfoEntity", referencedColumnName = "id_b")
+    @JoinColumn(name = "id_basicInfo", referencedColumnName = "id_basic")
     private BasicInfoEntity basicInfo;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_user", referencedColumnName = "id_user",nullable = true)
+    private UserEntity userEntity;
 }

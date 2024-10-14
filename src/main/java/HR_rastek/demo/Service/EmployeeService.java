@@ -5,12 +5,8 @@ package HR_rastek.demo.Service;
 import HR_rastek.demo.DTO.EmployeeRes;
 import HR_rastek.demo.DTO.EmployeeReq;
 import HR_rastek.demo.DTO.UpdateEmployeeReq;
-import HR_rastek.demo.Entity.BasicInfoEntity;
-import HR_rastek.demo.Entity.EmployeeEntity;
-import HR_rastek.demo.Entity.PersonalInfoEntity;
-import HR_rastek.demo.Repository.BasicInfoRepository;
-import HR_rastek.demo.Repository.EmployeeRepository;
-import HR_rastek.demo.Repository.PersonalInfoRepository;
+import HR_rastek.demo.Entity.*;
+import HR_rastek.demo.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -18,13 +14,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class EmployeeService {
 
     @Autowired
     private BasicInfoRepository basicInfoRepository;
+
+    @Autowired
+    private DepartementRepository departementRepository;
+
+    @Autowired
+    private DivisionRepository divisionRepository;
+
+    @Autowired
+    private SubDivisionRepository subDivisionRepository;
+
+    @Autowired
+    private JabatanRepository jabatanRepository;
 
     @Autowired
     private PersonalInfoRepository personalInfoRepository;
@@ -41,14 +49,41 @@ public class EmployeeService {
 
         BasicInfoEntity basicInfo = new BasicInfoEntity();
 
-        basicInfo.setJabatan(request.getJabatan());
-        basicInfo.setDivisi(request.getDivisi());
-        basicInfo.setDepartement(request.getDepartement());
         basicInfo.setStatusKontrak(request.getStatusKontrak());
         basicInfo.setTanggalMulaiKontrak(request.getTanggalMulaiKontrak());
         basicInfo.setKontrakKedua(request.getKontrakKedua());
         basicInfo.setSalary(request.getSalary());
         basicInfo.setAttachment(request.getAttachment());
+
+        // Set DepartementEntity
+        DepartementEntity departementEntity = new DepartementEntity();
+        departementEntity.setId(request.getDepartementId());
+        basicInfo.setDepartementEntity(departementEntity);
+
+        // Set DivisionEntity
+        if (request.getDivisionId() != null) {
+            DivisionEntity divisionEntity = new DivisionEntity();
+            divisionEntity.setId(request.getDivisionId());
+            basicInfo.setDivisionEntity(divisionEntity);
+        }
+
+        // Set SubDivisionEntity
+        if (request.getSubDivisionId() != null) {
+            SubDivisionEntity subDivisionEntity = new SubDivisionEntity();
+            subDivisionEntity.setId(request.getSubDivisionId());
+            basicInfo.setSubDivisionEntity(subDivisionEntity);
+        }
+
+        // Set JabatanEntities
+        List<JabatanEntity> jabatanEntities = new ArrayList<>();
+        for (Long jabatanId : request.getJabatanIds()) {
+            JabatanEntity jabatanEntity = new JabatanEntity();
+            jabatanEntity.setId(jabatanId);
+            jabatanEntities.add(jabatanEntity);
+        }
+        basicInfo.setJabatanEntities(jabatanEntities);
+
+        // Save basicInfoEntity and return response
 
         basicInfoRepository.save(basicInfo);
 
@@ -89,26 +124,25 @@ public class EmployeeService {
         return toEmployeeResponse(employeeEntity);
     }
 
-//    @Transactional(readOnly = true)
-//    public EmployeeRes get(Long id){
-//        EmployeeEntity employeeEntity = employeeRepository.findFirstByIdE(id)
-//                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee Not Found"));
-//
-//        return toEmployeeResponse(employeeEntity);
-//    }
+    @Transactional(readOnly = true)
+    public EmployeeRes get(Long id){
+        EmployeeEntity employeeEntity = employeeRepository.findFirstById(id)
+                .orElseThrow(()->new ResponseStatusException
+                        (HttpStatus.NOT_FOUND, "Employee Not Found"));
+
+        return toEmployeeResponse(employeeEntity);
+    }
 
     @Transactional
     public  EmployeeRes update(UpdateEmployeeReq request){
 
         validationService.validate(request);
 
-//        EmployeeEntity employeeEntity = employeeRepository.findFirstByIdE(request.getId())
-//                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee Not Found"));
+        EmployeeEntity employeeEntity = employeeRepository.findFirstById(request.getId())
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee Not Found"));
+
         BasicInfoEntity basicInfo = new BasicInfoEntity();
 
-        basicInfo.setJabatan(request.getJabatan());
-        basicInfo.setDivisi(request.getDivisi());
-        basicInfo.setDepartement(request.getDepartement());
         basicInfo.setStatusKontrak(request.getStatusKontrak());
         basicInfo.setTanggalMulaiKontrak(request.getTanggalMulaiKontrak());
         basicInfo.setKontrakKedua(request.getKontrakKedua());
@@ -144,7 +178,7 @@ public class EmployeeService {
 
         personalInfoRepository.save(personalInfoEntity);
 
-        EmployeeEntity employeeEntity = new EmployeeEntity();
+        employeeEntity = new EmployeeEntity();
 
         employeeEntity.setBasicInfo(basicInfo);
         employeeEntity.setPersonalInfo(personalInfoEntity);
@@ -160,16 +194,13 @@ public class EmployeeService {
         PersonalInfoEntity personalInfoEntity = employeeEntity.getPersonalInfo();
 
         return EmployeeRes.builder()
-                .id_b(basicInfo.getId_b())
-                .jabatan(basicInfo.getJabatan())
-                .divisi(basicInfo.getDivisi())
-                .departement(basicInfo.getDepartement())
+                .id_basic(basicInfo.getId())
                 .statusKontrak(basicInfo.getStatusKontrak())
                 .tanggalMulaiKontrak(basicInfo.getTanggalMulaiKontrak())
                 .kontrakKedua(basicInfo.getKontrakKedua())
                 .salary(basicInfo.getSalary())
                 .attachment(basicInfo.getAttachment())
-                .id_p(personalInfoEntity.getId_p())
+                .id_personal(personalInfoEntity.getId())
                 .name(personalInfoEntity.getName())
                 .NIP(personalInfoEntity.getNIP())
                 .NIK(personalInfoEntity.getNIK())

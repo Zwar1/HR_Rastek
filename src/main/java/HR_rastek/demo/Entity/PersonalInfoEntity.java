@@ -16,8 +16,8 @@ public class PersonalInfoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_p")
-    private Long id_p;
+    @Column(name = "id_personal")
+    private Long id;
 
     private String name;
     private String NIP;

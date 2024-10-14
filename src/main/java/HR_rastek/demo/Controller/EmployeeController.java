@@ -23,23 +23,23 @@ public class EmployeeController {
         return WebResponse.<EmployeeRes>builder().data(employeeRes).build();
     }
 
-//    @GetMapping(
-//            path = "/api/addEmployee/{id}",
-//            produces = MediaType.APPLICATION_JSON_VALUE
-//    )
-//    public WebResponse<EmployeeRes> get(@PathVariable("id") Long id){
-//        EmployeeRes employeeRes = employeeService.get(id);
-//        return WebResponse.<EmployeeRes>builder().data(employeeRes).build();
-//    }
+    @GetMapping(
+            path = "/api/addEmployee/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<EmployeeRes> get(@PathVariable("id") Long id){
+        EmployeeRes employeeRes = employeeService.get(id);
+        return WebResponse.<EmployeeRes>builder().data(employeeRes).build();
+    }
 
     @PutMapping(
-            path = "/api/addEmployee{id}",
+            path = "/api/addEmployee/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public WebResponse<EmployeeRes> update(@RequestBody UpdateEmployeeReq request,
-                                           @PathVariable("id") Long idEmployee) {
-        request.setId(idEmployee);
+                                           @PathVariable("id") Long id) {
+        request.setId(id);
         EmployeeRes employeeRes = employeeService.update(request);
         return WebResponse.<EmployeeRes>builder().data(employeeRes).build();
     }

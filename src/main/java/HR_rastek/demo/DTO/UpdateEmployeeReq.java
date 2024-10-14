@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 
 public class UpdateEmployeeReq {
 
@@ -44,15 +45,10 @@ public class UpdateEmployeeReq {
 
 
     // Basic Information fields
-    private String jabatan;
-    private String divisi;
-    private String departement;
     private String statusKontrak;
     private String tanggalMulaiKontrak;
     private String kontrakKedua;
     private BigDecimal salary;
     private String attachment;
-
-
 
 }

@@ -3,12 +3,15 @@ package HR_rastek.demo.DTO;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 
 public class EmployeeReq {
     // Personal Information fields
@@ -37,15 +40,22 @@ public class EmployeeReq {
 
 
     // Basic Information fields
-    private String jabatan;
-    private String divisi;
-    private String departement;
     private String statusKontrak;
     private String tanggalMulaiKontrak;
     private String kontrakKedua;
     private BigDecimal salary;
     private String attachment;
 
+    // Department info
+    private Long departementId; // ID dari DepartementEntity
 
+    // Division info
+    private Long divisionId; // ID dari DivisionEntity
+
+    // SubDivision info
+    private Long subDivisionId; // ID dari SubDivisionEntity
+
+    // Jabatan info
+    private List<Long> jabatanIds; // Set ID dari JabatanEntity
 
 }
