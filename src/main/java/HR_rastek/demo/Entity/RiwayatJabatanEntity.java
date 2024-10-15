@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.management.relation.Role;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -17,16 +19,17 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "basic_info")
-public class BasicInfoEntity {
+@Table(name = "riwayat_jabatan")
+public class RiwayatJabatanEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_basic")
+    @Column(name = "id_riwayat")
     private Long id;
 
     private String statusKontrak;
-    private String tanggalMulaiKontrak;
+    private String tmt_mulai;
+    private String tmt_akhir;
     private String kontrakKedua;
     private BigDecimal salary;
     private String attachment;
@@ -43,11 +46,6 @@ public class BasicInfoEntity {
     @JoinColumn(name = "id_sub", referencedColumnName = "id_sub", nullable = true)
     private SubDivisionEntity subDivisionEntity;
 
-    @ManyToMany
-    @JoinTable(
-            name = "basic_info_jabatan",
-            joinColumns = @JoinColumn(name = "basic_info_id"),
-            inverseJoinColumns = @JoinColumn(name = "jabatan_id")
-    )
-    private List<JabatanEntity> jabatanEntities;
+    @OneToMany(mappedBy = "riwayatJabatan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<JabatanEntity> jabatanEntities = new ArrayList<>();
 }

@@ -1,7 +1,6 @@
 package HR_rastek.demo.Service;
 
 import HR_rastek.demo.DTO.*;
-import HR_rastek.demo.Entity.BasicInfoEntity;
 import HR_rastek.demo.Entity.DepartementEntity;
 import HR_rastek.demo.Entity.EmployeeEntity;
 import HR_rastek.demo.Repository.DepartementRepository;

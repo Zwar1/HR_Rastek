@@ -24,10 +24,8 @@ public class JabatanService {
 
         JabatanEntity jabatanEntity = new JabatanEntity();
 
-        jabatanEntity.setKode_struktural(request.getKode_struktural());
+        jabatanEntity.setKode_jabatan(request.getKode_jabatan());
         jabatanEntity.setNama_struktural(request.getNama_struktural());
-
-        jabatanEntity.setKode_fungsional(request.getKode_fungsional());
         jabatanEntity.setNama_fungsional(request.getNama_fungsional());
 
         jabatanRepository.save(jabatanEntity);
@@ -54,10 +52,8 @@ public class JabatanService {
 
         JabatanEntity jabatanEntity = new JabatanEntity();
 
-        jabatanEntity.setKode_struktural(request.getKode_struktural());
+        jabatanEntity.setKode_jabatan(request.getKode_jabatan());
         jabatanEntity.setNama_struktural(request.getNama_struktural());
-
-        jabatanEntity.setKode_fungsional(request.getKode_fungsional());
         jabatanEntity.setNama_fungsional(request.getNama_fungsional());
 
         jabatanRepository.save(jabatanEntity);
@@ -71,9 +67,8 @@ public class JabatanService {
 
         return JabatanRes.builder()
                 .id(jabatan1.getId())
-                .kode_struktural(jabatan1.getKode_struktural())
+                .kode_jabatan(jabatan1.getKode_jabatan())
                 .nama_struktural(jabatan1.getNama_struktural())
-                .kode_fungsional(jabatan1.getKode_fungsional())
                 .nama_fungsional(jabatan1.getNama_fungsional())
                 .build();
     }

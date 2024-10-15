@@ -2,7 +2,6 @@ package HR_rastek.demo.Controller;
 
 import HR_rastek.demo.DTO.*;
 import HR_rastek.demo.Service.DepartementService;
-import HR_rastek.demo.Service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,9 @@ public class DepartementController {
     @Autowired
     private DepartementService departementService;
 
+
     //Post API
+//    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.POST, RequestMethod.OPTIONS})
     @PostMapping(
             path = "/api/addDepartement",
             consumes = MediaType.APPLICATION_JSON_VALUE,

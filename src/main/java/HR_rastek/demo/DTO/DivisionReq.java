@@ -12,4 +12,6 @@ import lombok.*;
 public class DivisionReq {
 
     private String division_name;
+
+    private Long departement_id;
 }

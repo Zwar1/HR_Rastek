@@ -12,4 +12,6 @@ import lombok.*;
 public class SubDivisionReq {
 
     private String subDivision_name;
+
+    private String division_id;
 }

@@ -17,12 +17,11 @@ public class UpdateEmployeeReq {
 
     @JsonIgnore
     @NotBlank
-    private Long id;
+    private Long NIK;
 
     // Personal Information fields
     private String name;
-    private String NIP;
-    private String NIK;
+    private String no_ktp;
     private String NPWP;
     private String kartuKeluarga;
     private String jenisKelamin;
@@ -46,7 +45,8 @@ public class UpdateEmployeeReq {
 
     // Basic Information fields
     private String statusKontrak;
-    private String tanggalMulaiKontrak;
+    private String tmt_awal;
+    private String tmt_akhir;
     private String kontrakKedua;
     private BigDecimal salary;
     private String attachment;

@@ -38,8 +38,8 @@ public class EmployeeController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public WebResponse<EmployeeRes> update(@RequestBody UpdateEmployeeReq request,
-                                           @PathVariable("id") Long id) {
-        request.setId(id);
+                                           @PathVariable("NIK") Long NIK) {
+        request.setNIK(NIK);
         EmployeeRes employeeRes = employeeService.update(request);
         return WebResponse.<EmployeeRes>builder().data(employeeRes).build();
     }

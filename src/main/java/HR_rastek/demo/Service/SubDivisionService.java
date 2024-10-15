@@ -1,7 +1,10 @@
 package HR_rastek.demo.Service;
 
 import HR_rastek.demo.DTO.*;
+import HR_rastek.demo.Entity.DepartementEntity;
+import HR_rastek.demo.Entity.DivisionEntity;
 import HR_rastek.demo.Entity.SubDivisionEntity;
+import HR_rastek.demo.Repository.DivisionRepository;
 import HR_rastek.demo.Repository.SubDivisionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +19,18 @@ public class SubDivisionService {
     SubDivisionRepository subDivisionRepository;
 
     @Autowired
+    DivisionRepository divisionRepository;
+
+    @Autowired
     ValidationService validationService;
 
     @Transactional
     public SubDivisionRes create(SubDivisionReq request) {
         validationService.validate(request);
+
+        // Find the Departement from the database using the provided ID
+        DivisionEntity division = divisionRepository.findById(request.getDivision_id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Division not found"));
 
         SubDivisionEntity subDivision = new SubDivisionEntity();
 

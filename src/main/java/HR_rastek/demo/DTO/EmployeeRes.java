@@ -13,11 +13,11 @@ import java.util.List;
 @Data
 
 public class EmployeeRes {
+
     // Personal Information fields
-    private Long id_personal;
+    private Long NIK;
     private String name;
-    private String NIP;
-    private String NIK;
+    private String no_ktp;
     private String NPWP;
     private String kartuKeluarga;
     private String jenisKelamin;
@@ -40,13 +40,10 @@ public class EmployeeRes {
 
 
     // Basic Information fields
-    private Long id_basic;
-    private String jabatan;
-    private String divisi;
-    private String subDivisi;
-    private String departement;
+    private String id_riwayat;
     private String statusKontrak;
-    private String tanggalMulaiKontrak;
+    private String tmt_awal;
+    private String tmt_akhir;
     private String kontrakKedua;
     private BigDecimal salary;
     private String attachment;
@@ -66,8 +63,5 @@ public class EmployeeRes {
     // Jabatan info
     private List<Long> jabatanIds; // Set ID dari JabatanEntity
     private List<String> jabatanNames; // Set nama dari JabatanEntity
-
-    // Employee Fields
-    private Long id;
 
 }

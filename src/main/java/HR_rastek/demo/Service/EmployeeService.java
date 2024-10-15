@@ -1,12 +1,11 @@
 package HR_rastek.demo.Service;
 
-//import HR_rastek.demo.DTO.BasicInfoRequest;
-//import HR_rastek.demo.DTO.BasicInfoResponse;
 import HR_rastek.demo.DTO.EmployeeRes;
 import HR_rastek.demo.DTO.EmployeeReq;
 import HR_rastek.demo.DTO.UpdateEmployeeReq;
 import HR_rastek.demo.Entity.*;
 import HR_rastek.demo.Repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -20,7 +19,7 @@ import java.util.*;
 public class EmployeeService {
 
     @Autowired
-    private BasicInfoRepository basicInfoRepository;
+    private RiwayatJabatanRepository riwayatJabatanRepository;
 
     @Autowired
     private DepartementRepository departementRepository;
@@ -35,9 +34,6 @@ public class EmployeeService {
     private JabatanRepository jabatanRepository;
 
     @Autowired
-    private PersonalInfoRepository personalInfoRepository;
-
-    @Autowired
     private EmployeeRepository employeeRepository;
 
     @Autowired
@@ -47,31 +43,58 @@ public class EmployeeService {
     public EmployeeRes create(EmployeeReq request){
         validationService.validate(request);
 
-        BasicInfoEntity basicInfo = new BasicInfoEntity();
+        EmployeeEntity employee = new EmployeeEntity();
 
-        basicInfo.setStatusKontrak(request.getStatusKontrak());
-        basicInfo.setTanggalMulaiKontrak(request.getTanggalMulaiKontrak());
-        basicInfo.setKontrakKedua(request.getKontrakKedua());
-        basicInfo.setSalary(request.getSalary());
-        basicInfo.setAttachment(request.getAttachment());
+        employee.setName(request.getName());
+        employee.setNo_ktp(request.getNo_ktp());
+        employee.setNPWP(request.getNPWP());
+        employee.setKartuKeluarga(request.getKartuKeluarga());
+        employee.setJenisKelamin(request.getJenisKelamin());
+        employee.setTempatLahir(request.getTempatLahir());
+        employee.setAgama(request.getAgama());
+        employee.setAlamatLengkap(request.getAlamatLengkap());
+        employee.setAlamatDomisili(request.getAlamatDomisili());
+        employee.setNoTelp(request.getNoTelp());
+        employee.setKontakDarurat(request.getKontakDarurat());
+        employee.setNoKontakDarurat(request.getNoKontakDarurat());
+        employee.setEmailPribadi(request.getEmailPribadi());
+        employee.setPendidikanTerakhir(request.getPendidikanTerakhir());
+        employee.setJurusan(request.getJurusan());
+        employee.setNamaUniversitas(request.getNamaUniversitas());
+        employee.setNamaIbuKandung(request.getNamaIbuKandung());
+        employee.setStatusPernikahan(request.getStatusPernikahan());
+        employee.setJumlahAnak(request.getJumlahAnak());
+        employee.setNomorRekening(request.getNomorRekening());
+        employee.setBank(request.getBank());
+
+        RiwayatJabatanEntity riwayatJabatan = new RiwayatJabatanEntity();
+
+        riwayatJabatan.setStatusKontrak(request.getStatusKontrak());
+        riwayatJabatan.setTmt_mulai(request.getTmt_akhir());
+        riwayatJabatan.setTmt_akhir(request.getTmt_akhir());
+        riwayatJabatan.setKontrakKedua(request.getKontrakKedua());
+        riwayatJabatan.setSalary(request.getSalary());
+        riwayatJabatan.setAttachment(request.getAttachment());
 
         // Set DepartementEntity
-        DepartementEntity departementEntity = new DepartementEntity();
-        departementEntity.setId(request.getDepartementId());
-        basicInfo.setDepartementEntity(departementEntity);
+        if (request.getDepartementId() != null) {
+            DepartementEntity departementEntity = departementRepository.findById(request.getDepartementId())
+                    .orElseThrow(() -> new EntityNotFoundException("Departement not found"));
+            riwayatJabatan.setDepartementEntity(departementEntity);
+        }
 
         // Set DivisionEntity
         if (request.getDivisionId() != null) {
-            DivisionEntity divisionEntity = new DivisionEntity();
-            divisionEntity.setId(request.getDivisionId());
-            basicInfo.setDivisionEntity(divisionEntity);
+            DivisionEntity divisionEntity = divisionRepository.findById(request.getDivisionId())
+                    .orElseThrow(() -> new EntityNotFoundException("Division not found"));
+            riwayatJabatan.setDivisionEntity(divisionEntity);
         }
 
         // Set SubDivisionEntity
         if (request.getSubDivisionId() != null) {
-            SubDivisionEntity subDivisionEntity = new SubDivisionEntity();
-            subDivisionEntity.setId(request.getSubDivisionId());
-            basicInfo.setSubDivisionEntity(subDivisionEntity);
+            SubDivisionEntity subDivisionEntity = subDivisionRepository.findById(request.getSubDivisionId())
+                    .orElseThrow(() -> new EntityNotFoundException("SubDivision not found"));
+            riwayatJabatan.setSubDivisionEntity(subDivisionEntity);
         }
 
         // Set JabatanEntities
@@ -81,52 +104,23 @@ public class EmployeeService {
             jabatanEntity.setId(jabatanId);
             jabatanEntities.add(jabatanEntity);
         }
-        basicInfo.setJabatanEntities(jabatanEntities);
+        riwayatJabatan.setJabatanEntities(jabatanEntities);
 
         // Save basicInfoEntity and return response
 
-        basicInfoRepository.save(basicInfo);
+        riwayatJabatanRepository.save(riwayatJabatan);
 
-        PersonalInfoEntity personalInfoEntity = new PersonalInfoEntity();
 
-        personalInfoEntity.setName(request.getName());
-        personalInfoEntity.setNIP(request.getNIP());
-        personalInfoEntity.setNIK(request.getNIK());
-        personalInfoEntity.setNPWP(request.getNPWP());
-        personalInfoEntity.setKartuKeluarga(request.getKartuKeluarga());
-        personalInfoEntity.setJenisKelamin(request.getJenisKelamin());
-        personalInfoEntity.setTempatLahir(request.getTempatLahir());
-        personalInfoEntity.setAgama(request.getAgama());
-        personalInfoEntity.setAlamatLengkap(request.getAlamatLengkap());
-        personalInfoEntity.setAlamatDomisili(request.getAlamatDomisili());
-        personalInfoEntity.setNoTelp(request.getNoTelp());
-        personalInfoEntity.setKontakDarurat(request.getKontakDarurat());
-        personalInfoEntity.setNoKontakDarurat(request.getNoKontakDarurat());
-        personalInfoEntity.setEmailPribadi(request.getEmailPribadi());
-        personalInfoEntity.setPendidikanTerakhir(request.getPendidikanTerakhir());
-        personalInfoEntity.setJurusan(request.getJurusan());
-        personalInfoEntity.setNamaUniversitas(request.getNamaUniversitas());
-        personalInfoEntity.setNamaIbuKandung(request.getNamaIbuKandung());
-        personalInfoEntity.setStatusPernikahan(request.getStatusPernikahan());
-        personalInfoEntity.setJumlahAnak(request.getJumlahAnak());
-        personalInfoEntity.setNomorRekening(request.getNomorRekening());
-        personalInfoEntity.setBank(request.getBank());
+        employee.setRiwayatJabatan(riwayatJabatan);
 
-        personalInfoRepository.save(personalInfoEntity);
+        employeeRepository.save(employee);
 
-        EmployeeEntity employeeEntity = new EmployeeEntity();
-
-        employeeEntity.setBasicInfo(basicInfo);
-        employeeEntity.setPersonalInfo(personalInfoEntity);
-
-        employeeRepository.save(employeeEntity);
-
-        return toEmployeeResponse(employeeEntity);
+        return toEmployeeResponse(employee);
     }
 
     @Transactional(readOnly = true)
-    public EmployeeRes get(Long id){
-        EmployeeEntity employeeEntity = employeeRepository.findFirstById(id)
+    public EmployeeRes get(Long NIK){
+        EmployeeEntity employeeEntity = employeeRepository.findFirstByNIK(NIK)
                 .orElseThrow(()->new ResponseStatusException
                         (HttpStatus.NOT_FOUND, "Employee Not Found"));
 
@@ -138,50 +132,45 @@ public class EmployeeService {
 
         validationService.validate(request);
 
-        EmployeeEntity employeeEntity = employeeRepository.findFirstById(request.getId())
+        EmployeeEntity employeeEntity = employeeRepository.findFirstByNIK(request.getNIK())
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee Not Found"));
 
-        BasicInfoEntity basicInfo = new BasicInfoEntity();
+        RiwayatJabatanEntity riwayatJabatan = new RiwayatJabatanEntity();
 
-        basicInfo.setStatusKontrak(request.getStatusKontrak());
-        basicInfo.setTanggalMulaiKontrak(request.getTanggalMulaiKontrak());
-        basicInfo.setKontrakKedua(request.getKontrakKedua());
-        basicInfo.setSalary(request.getSalary());
-        basicInfo.setAttachment(request.getAttachment());
+        riwayatJabatan.setStatusKontrak(request.getStatusKontrak());
+        riwayatJabatan.setTmt_mulai(request.getTmt_awal());
+        riwayatJabatan.setTmt_akhir(request.getTmt_akhir());
+        riwayatJabatan.setKontrakKedua(request.getKontrakKedua());
+        riwayatJabatan.setSalary(request.getSalary());
+        riwayatJabatan.setAttachment(request.getAttachment());
 
-        basicInfoRepository.save(basicInfo);
+        riwayatJabatanRepository.save(riwayatJabatan);
 
-        PersonalInfoEntity personalInfoEntity = new PersonalInfoEntity();
+        EmployeeEntity employee = new EmployeeEntity();
 
-        personalInfoEntity.setName(request.getName());
-        personalInfoEntity.setNIP(request.getNIP());
-        personalInfoEntity.setNIK(request.getNIK());
-        personalInfoEntity.setNPWP(request.getNPWP());
-        personalInfoEntity.setKartuKeluarga(request.getKartuKeluarga());
-        personalInfoEntity.setJenisKelamin(request.getJenisKelamin());
-        personalInfoEntity.setTempatLahir(request.getTempatLahir());
-        personalInfoEntity.setAgama(request.getAgama());
-        personalInfoEntity.setAlamatLengkap(request.getAlamatLengkap());
-        personalInfoEntity.setAlamatDomisili(request.getAlamatDomisili());
-        personalInfoEntity.setNoTelp(request.getNoTelp());
-        personalInfoEntity.setKontakDarurat(request.getKontakDarurat());
-        personalInfoEntity.setNoKontakDarurat(request.getNoKontakDarurat());
-        personalInfoEntity.setEmailPribadi(request.getEmailPribadi());
-        personalInfoEntity.setPendidikanTerakhir(request.getPendidikanTerakhir());
-        personalInfoEntity.setJurusan(request.getJurusan());
-        personalInfoEntity.setNamaUniversitas(request.getNamaUniversitas());
-        personalInfoEntity.setNamaIbuKandung(request.getNamaIbuKandung());
-        personalInfoEntity.setStatusPernikahan(request.getStatusPernikahan());
-        personalInfoEntity.setJumlahAnak(request.getJumlahAnak());
-        personalInfoEntity.setNomorRekening(request.getNomorRekening());
-        personalInfoEntity.setBank(request.getBank());
+        employee.setName(request.getName());
+        employee.setNo_ktp(request.getNo_ktp());
+        employee.setNPWP(request.getNPWP());
+        employee.setKartuKeluarga(request.getKartuKeluarga());
+        employee.setJenisKelamin(request.getJenisKelamin());
+        employee.setTempatLahir(request.getTempatLahir());
+        employee.setAgama(request.getAgama());
+        employee.setAlamatLengkap(request.getAlamatLengkap());
+        employee.setAlamatDomisili(request.getAlamatDomisili());
+        employee.setNoTelp(request.getNoTelp());
+        employee.setKontakDarurat(request.getKontakDarurat());
+        employee.setNoKontakDarurat(request.getNoKontakDarurat());
+        employee.setEmailPribadi(request.getEmailPribadi());
+        employee.setPendidikanTerakhir(request.getPendidikanTerakhir());
+        employee.setJurusan(request.getJurusan());
+        employee.setNamaUniversitas(request.getNamaUniversitas());
+        employee.setNamaIbuKandung(request.getNamaIbuKandung());
+        employee.setStatusPernikahan(request.getStatusPernikahan());
+        employee.setJumlahAnak(request.getJumlahAnak());
+        employee.setNomorRekening(request.getNomorRekening());
+        employee.setBank(request.getBank());
 
-        personalInfoRepository.save(personalInfoEntity);
-
-        employeeEntity = new EmployeeEntity();
-
-        employeeEntity.setBasicInfo(basicInfo);
-        employeeEntity.setPersonalInfo(personalInfoEntity);
+        employeeEntity.setRiwayatJabatan(riwayatJabatan);
 
         employeeRepository.save(employeeEntity);
 
@@ -190,40 +179,37 @@ public class EmployeeService {
 
     private EmployeeRes toEmployeeResponse(EmployeeEntity employeeEntity) {
 
-        BasicInfoEntity basicInfo = employeeEntity.getBasicInfo();
-        PersonalInfoEntity personalInfoEntity = employeeEntity.getPersonalInfo();
+        RiwayatJabatanEntity riwayatJabatan = employeeEntity.getRiwayatJabatan();
 
         return EmployeeRes.builder()
-                .id_basic(basicInfo.getId())
-                .statusKontrak(basicInfo.getStatusKontrak())
-                .tanggalMulaiKontrak(basicInfo.getTanggalMulaiKontrak())
-                .kontrakKedua(basicInfo.getKontrakKedua())
-                .salary(basicInfo.getSalary())
-                .attachment(basicInfo.getAttachment())
-                .id_personal(personalInfoEntity.getId())
-                .name(personalInfoEntity.getName())
-                .NIP(personalInfoEntity.getNIP())
-                .NIK(personalInfoEntity.getNIK())
-                .NPWP(personalInfoEntity.getNPWP())
-                .kartuKeluarga(personalInfoEntity.getKartuKeluarga())
-                .jenisKelamin(personalInfoEntity.getJenisKelamin())
-                .tempatLahir(personalInfoEntity.getTempatLahir())
-                .agama(personalInfoEntity.getAgama())
-                .alamatLengkap(personalInfoEntity.getAlamatLengkap())
-                .alamatDomisili(personalInfoEntity.getAlamatDomisili())
-                .noTelp(personalInfoEntity.getNoTelp())
-                .kontakDarurat(personalInfoEntity.getKontakDarurat())
-                .noKontakDarurat(personalInfoEntity.getNoKontakDarurat())
-                .emailPribadi(personalInfoEntity.getEmailPribadi())
-                .pendidikanTerakhir(personalInfoEntity.getPendidikanTerakhir())
-                .jurusan(personalInfoEntity.getJurusan())
-                .namaUniversitas(personalInfoEntity.getNamaUniversitas())
-                .namaIbuKandung(personalInfoEntity.getNamaIbuKandung())
-                .statusPernikahan(personalInfoEntity.getStatusPernikahan())
-                .jumlahAnak(personalInfoEntity.getJumlahAnak())
-                .nomorRekening(personalInfoEntity.getNomorRekening())
-                .bank(personalInfoEntity.getBank())
-                .id(employeeEntity.getId())
+                .NIK(employeeEntity.getNIK())
+                .name(employeeEntity.getName())
+                .no_ktp(employeeEntity.getNo_ktp())
+                .NPWP(employeeEntity.getNPWP())
+                .kartuKeluarga(employeeEntity.getKartuKeluarga())
+                .jenisKelamin(employeeEntity.getJenisKelamin())
+                .tempatLahir(employeeEntity.getTempatLahir())
+                .agama(employeeEntity.getAgama())
+                .alamatLengkap(employeeEntity.getAlamatLengkap())
+                .alamatDomisili(employeeEntity.getAlamatDomisili())
+                .noTelp(employeeEntity.getNoTelp())
+                .kontakDarurat(employeeEntity.getKontakDarurat())
+                .noKontakDarurat(employeeEntity.getNoKontakDarurat())
+                .emailPribadi(employeeEntity.getEmailPribadi())
+                .pendidikanTerakhir(employeeEntity.getPendidikanTerakhir())
+                .jurusan(employeeEntity.getJurusan())
+                .namaUniversitas(employeeEntity.getNamaUniversitas())
+                .namaIbuKandung(employeeEntity.getNamaIbuKandung())
+                .statusPernikahan(employeeEntity.getStatusPernikahan())
+                .jumlahAnak(employeeEntity.getJumlahAnak())
+                .nomorRekening(employeeEntity.getNomorRekening())
+                .bank(employeeEntity.getBank())
+                .statusKontrak(riwayatJabatan.getStatusKontrak())
+                .tmt_awal(riwayatJabatan.getTmt_mulai())
+                .tmt_akhir(riwayatJabatan.getTmt_akhir())
+                .kontrakKedua(riwayatJabatan.getKontrakKedua())
+                .salary(riwayatJabatan.getSalary())
+                .attachment(riwayatJabatan.getAttachment())
                 .build();
     }
 

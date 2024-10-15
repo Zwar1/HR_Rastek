@@ -30,6 +30,6 @@ public class SubDivisionEntity {
     private DivisionEntity divisionEntity;
 
     @OneToMany(mappedBy = "subDivisionEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BasicInfoEntity> basicInfoEntity = new HashSet<>();
+    private Set<RiwayatJabatanEntity> riwayatJabatanEntities = new HashSet<>();
 
 }

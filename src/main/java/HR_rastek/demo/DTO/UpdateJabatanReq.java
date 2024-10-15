@@ -18,13 +18,11 @@ public class UpdateJabatanReq {
     private Long id;
 
     //Struktural Fields
-    private String kode_struktural;
+    private String kode_jabatan;
 
     private String nama_struktural;
 
     //Fungsional Fields
-
-    private String kode_fungsional;
 
     private String nama_fungsional;
 

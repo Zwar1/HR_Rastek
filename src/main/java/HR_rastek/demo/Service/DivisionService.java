@@ -2,7 +2,9 @@ package HR_rastek.demo.Service;
 
 
 import HR_rastek.demo.DTO.*;
+import HR_rastek.demo.Entity.DepartementEntity;
 import HR_rastek.demo.Entity.DivisionEntity;
+import HR_rastek.demo.Repository.DepartementRepository;
 import HR_rastek.demo.Repository.DivisionRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -22,15 +24,23 @@ public class DivisionService {
     DivisionRepository divisionRepository;
 
     @Autowired
+    DepartementRepository departementRepository;
+
+    @Autowired
     ValidationService validationService;
 
     @Transactional
     public DivisionRes create(DivisionReq request) {
         validationService.validate(request);
 
+        // Find the Departement from the database using the provided ID
+        DepartementEntity departement = departementRepository.findById(request.getDepartement_id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Departement not found"));
+
         DivisionEntity division = new DivisionEntity();
 
         division.setDivision_name(request.getDivision_name());
+        division.setDepartementEntity(departement);
 
         divisionRepository.save(division);
 

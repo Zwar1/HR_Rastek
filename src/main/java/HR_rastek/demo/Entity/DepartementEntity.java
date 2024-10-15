@@ -24,12 +24,14 @@ public class DepartementEntity {
     @Column(name = "id_departement")
     private Long id;
 
+    @Column(name = "departement_name")
     private String departement_name;
 
+    @Column(name = "departement_head", nullable = true)
     private String departement_head;
 
     @OneToMany(mappedBy = "departementEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BasicInfoEntity> basicInfos = new HashSet<>();
+    private Set<RiwayatJabatanEntity> riwayatJabatanEntities = new HashSet<>();
 
     @OneToMany(mappedBy = "departementEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<DivisionEntity> divisionEntities = new HashSet<>();

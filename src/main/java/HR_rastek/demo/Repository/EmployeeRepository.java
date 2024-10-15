@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> {
 
-    Optional<EmployeeEntity> findFirstById(Long id);
+    Optional<EmployeeEntity> findFirstByNIK(Long NIK);
 
 }

@@ -1,6 +1,5 @@
 package HR_rastek.demo.DTO;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,12 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+public class TokenResponse {
+    private String token;
 
-public class WebResponse <T>{
+    private String username;
 
-    private T data;
-
-    private String message;
-
-    private T error;
+    private String email;
 }

@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "jabatan")
+@Table(name = "kode_jabatan")
 
 public class JabatanEntity {
 
@@ -23,15 +23,14 @@ public class JabatanEntity {
     @Column(name = "id_jabatan")
     private Long id;
 
-    private String kode_struktural;
+    private String kode_jabatan;
 
     private String nama_struktural;
 
-    private String kode_fungsional;
-
     private String nama_fungsional;
 
-    @ManyToMany(mappedBy = "jabatanEntities")
-    private Set<BasicInfoEntity> basicInfoEntities;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_riwayat", referencedColumnName = "id_riwayat")
+    private RiwayatJabatanEntity riwayatJabatan;
 
 }

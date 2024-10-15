@@ -16,12 +16,12 @@ import java.util.Set;
 public class EmployeeReq {
     // Personal Information fields
     private String name;
-    private String NIP;
-    private String NIK;
+    private String no_ktp;
     private String NPWP;
     private String kartuKeluarga;
     private String jenisKelamin;
     private String tempatLahir;
+    private String tanggalLahir;
     private String agama;
     private String alamatLengkap;
     private String alamatDomisili;
@@ -41,7 +41,8 @@ public class EmployeeReq {
 
     // Basic Information fields
     private String statusKontrak;
-    private String tanggalMulaiKontrak;
+    private String tmt_awal;
+    private String tmt_akhir;
     private String kontrakKedua;
     private BigDecimal salary;
     private String attachment;
