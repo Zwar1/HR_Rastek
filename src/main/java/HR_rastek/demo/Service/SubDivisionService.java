@@ -35,6 +35,7 @@ public class SubDivisionService {
         SubDivisionEntity subDivision = new SubDivisionEntity();
 
         subDivision.setSubDivision_name(request.getSubDivision_name());
+        subDivision.setDivisionEntity(division);
 
         subDivisionRepository.save(subDivision);
 

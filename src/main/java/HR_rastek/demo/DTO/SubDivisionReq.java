@@ -13,5 +13,5 @@ public class SubDivisionReq {
 
     private String subDivision_name;
 
-    private String division_id;
+    private Long division_id;
 }
